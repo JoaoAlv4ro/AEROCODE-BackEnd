@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum TipoAeronave {
+  COMERCIAL
+  MILITAR
+}
+
+enum NivelPermissao {
+  ADMINISTRADOR
+  ENGENHEIRO
+  OPERADOR
+}
+
+enum StatusPeca {
+  EM_PRODUCAO
+  EM_TRANSPORTE
+  PRONTA
+}
+
+enum StatusEtapa {
+  PENDENTE
+  ANDAMENTO
+  CONCLUIDA
+}
+
+enum ResultadoTeste {
+  NAO_REALIZADO
+  APROVADO
+  REPROVADO
+}
+
+enum TipoPeca {
+  IMPORTADA
+  NACIONAL
+}
+
+enum TipoTeste {
+  ELETRICO
+  HIDRAULICO
+  AERODINAMICO
+}
+
+model Aeronave {
+  codigo String @id
+  modelo String
+  tipo TipoAeronave
+  capacidade Int
+  alcance Int
+
+  etapas Etapa[]
+  pecas Peca[]
+  testes Teste[]
+}
+
+model Funcionario {
+  id Int @id @default(autoincrement())
+  nome String
+  telefone String
+  endereco String
+  username String
+  password String
+  permissao NivelPermissao
+
+  etapas EtapaFuncionario[]
+}
+
+model Etapa {
+  id Int @id @default(autoincrement())
+  nome String
+  prazo DateTime
+  status StatusEtapa
+
+  aeronaveCodigo String
+  aeronave Aeronave @relation(fields: [aeronaveCodigo], references: [codigo])
+
+  funcionarios EtapaFuncionario[]
+}
+
+// Relação Many-to-Many - Etapa e Funcionario
+model EtapaFuncionario {
+  etapaId Int
+  funcionarioId Int
+
+  etapa Etapa @relation(fields: [etapaId], references: [id])
+  funcionario Funcionario @relation(fields: [funcionarioId], references: [id])
+
+  @@id([etapaId, funcionarioId])
+}
+
+model Peca {
+  codigo String @id
+  nome String
+  tipo TipoPeca
+  fornecedor String
+  status StatusPeca
+
+  aeronaveCodigo String
+  aeronave Aeronave @relation(fields: [aeronaveCodigo], references: [codigo])
+}
+
+model Teste {
+  id Int @id @default(autoincrement())
+  tipo TipoTeste
+  resultado ResultadoTeste
+
+  aeronaveCodigo String
+  aeronave Aeronave @relation(fields: [aeronaveCodigo], references: [codigo])
+}
