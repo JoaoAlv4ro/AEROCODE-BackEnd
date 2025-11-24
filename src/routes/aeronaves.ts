@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { prisma } from "../lib/prisma";
-import { error } from "console";
 
 export const aeronavesRoutes = Router();
 
