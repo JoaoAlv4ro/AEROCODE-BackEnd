@@ -4,13 +4,13 @@ import { prisma } from "../lib/prisma";
 export const aeronavesRoutes = Router();
 
 aeronavesRoutes.get('/', async (_req, res) => {
-    const data = await prisma.aeronave.findMany();
+    const data = await prisma.aeronave.findMany({ include: { pecas: true, etapas: true, testes: true } });
     res.status(200).json(data);
 });
 
 aeronavesRoutes.get('/:codigo', async (req, res) => {
     const { codigo } = req.params;
-    const data = await prisma.aeronave.findUnique({ where: { codigo } });
+    const data = await prisma.aeronave.findUnique({ where: { codigo }, include: { pecas: true, etapas: true, testes: true } });
     if (!data) return res.status(404).json({ error: 'Aeronave not found' });
     res.status(200).json(data);
 });
