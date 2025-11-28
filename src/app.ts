@@ -6,6 +6,7 @@ import { etapasRoutes } from "./routes/etapas";
 import { pecasRoutes } from "./routes/pecas";
 import { aeronavePecasRoutes } from "./routes/aeronavePecas";
 import { testesRoutes } from "./routes/testes";
+import { aeronaveEtapasRoutes } from "./routes/aeronaveEtapas";
 import { aeronaveTestesRoutes } from "./routes/aeronaveTestes";
 import { etapasFuncionariosRoutes } from "./routes/etapasFuncionarios";
 
@@ -24,6 +25,7 @@ app.use('/etapas', etapasRoutes);
 app.use('/pecas', pecasRoutes);
 app.use('/aeronaves/:codigo/pecas', aeronavePecasRoutes);
 app.use('/testes', testesRoutes);
+app.use('/aeronaves/:codigo/etapas', aeronaveEtapasRoutes);
 app.use('/aeronaves/:codigo/testes', aeronaveTestesRoutes);
 app.use('/etapasFuncionarios', etapasFuncionariosRoutes);
 
