@@ -5,7 +5,7 @@ export const funcionariosRoutes = Router();
 const isIdNumber = (id: string) => !isNaN(Number(id));
 
 funcionariosRoutes.get('/', async (_req, res) => {
-    const data = await prisma.funcionario.findMany();
+    const data = await prisma.funcionario.findMany({ omit: { password: true } });
     res.status(200).json(data);
 });
 
@@ -14,7 +14,7 @@ funcionariosRoutes.get('/:id', async (req, res) => {
     if (!isIdNumber(id)) {
         return res.status(400).json({ error: 'ID inválido' });
     }
-    const data = await prisma.funcionario.findUnique({ where: { id: Number(id) } });
+    const data = await prisma.funcionario.findUnique({ where: { id: Number(id) }, omit: { password: true } });
     if (!data) return res.status(404).json({ error: 'Funcionário não encontrado' });
     res.status(200).json(data);
 });

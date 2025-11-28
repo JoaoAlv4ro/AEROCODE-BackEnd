@@ -3,3 +3,6 @@ dist
 .env
 
 /generated/prisma
+/charts
+
+./load-test-results.json

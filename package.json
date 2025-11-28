@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "ts-node-dev --respawn src/server.ts --transpileOnly ",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "metrics:test": "node tools/metrics/load-test.js --url http://localhost:3000/health --levels 1,5,10 --requests 30 --method GET",
+    "metrics:charts": "node tools/metrics/generate-charts.js"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -27,6 +29,8 @@
     "@prisma/client": "^6.19.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "chart.js": "^4.4.4",
+    "chartjs-node-canvas": "^5.0.0"
   }
 }
